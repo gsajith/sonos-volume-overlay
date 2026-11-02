@@ -2,7 +2,7 @@
 
 An Android TV app that shows your Sonos soundbar's volume on screen.
 
-Some TVs show no volume number for a third-party soundbar on HDMI ARC or eARC. Samsung is the common one. You press volume, the sound changes, and the screen shows nothing or a bare plus or minus. This app runs on an Android TV box like the Nvidia Shield and fixes that. Whenever the soundbar's volume or mute changes, it draws a small bar with the number in the top right corner. The bar fades after 2 seconds.
+Some TVs show no volume number for a third-party soundbar on HDMI ARC or eARC. Samsung is the common one. You press volume, the sound changes, and the screen shows nothing or a bare plus or minus. This app runs on an Android TV box like the Nvidia Shield and fixes that. Whenever the soundbar's volume or mute changes, it draws a bar with the number on the left side of the screen, just below the volume control Samsung TVs show. The bar fades after 2 seconds.
 
 The app reads the volume from the speaker itself, so it catches every change: the TV remote, the box's remote and the Sonos app.
 

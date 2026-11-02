@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -36,6 +37,11 @@ public class VolumeOverlayService extends Service {
     private static final long RETRY_MS = 5000;
     private static final long SHOW_MS = 2000;
     private static final int MAX_RESPONSE_BYTES = 16 * 1024;
+    // Samsung TVs show a volume control for HDMI soundbars against the left edge, about
+    // 29.5% of the screen wide, with its minus sign 69% of the way down. The bar sits
+    // just below it at the same width.
+    private static final float WIDTH_FRACTION = 0.295f;
+    private static final float TOP_FRACTION = 0.73f;
 
     private final Handler main = new Handler(Looper.getMainLooper());
     private WindowManager windowManager;
@@ -87,17 +93,17 @@ public class VolumeOverlayService extends Service {
     }
 
     private void addOverlay() {
-        float dp = getResources().getDisplayMetrics().density;
+        DisplayMetrics screen = getResources().getDisplayMetrics();
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                (int) (280 * dp), (int) (40 * dp),
+                (int) (screen.widthPixels * WIDTH_FRACTION), (int) (40 * screen.density),
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
-        lp.gravity = Gravity.TOP | Gravity.END;
-        lp.x = (int) (48 * dp);
-        lp.y = (int) (32 * dp);
+        lp.gravity = Gravity.TOP | Gravity.START;
+        lp.x = 0;
+        lp.y = (int) (screen.heightPixels * TOP_FRACTION);
         bar = new VolumeBarView(this);
         bar.setAlpha(0f);
         windowManager = getSystemService(WindowManager.class);

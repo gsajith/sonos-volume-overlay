@@ -51,7 +51,7 @@ Done when `adb shell dumpsys activity services com.gsajith.sonosvolume` shows `i
 
 ### 5. Verify on screen
 
-Ask the user before you change their volume. Read the current volume, set it 2 higher, wait 1 second, run `adb exec-out screencap -p > shot.png`, then set it back. Shield screenshots are 3840 wide, so scale them down before viewing. The bar sits in the top right corner.
+Ask the user before you change their volume. Read the current volume, set it 2 higher, wait 1 second, run `adb exec-out screencap -p > shot.png`, then set it back. Shield screenshots are 3840 wide, so scale them down before viewing. The bar sits against the left edge, about 73% of the way down.
 
 Done when the screenshot shows the bar with the new number and the volume is back where it started.
 
