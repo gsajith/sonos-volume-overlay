@@ -35,6 +35,7 @@ public class VolumeOverlayService extends Service {
     private static final long POLL_MS = 250;
     private static final long RETRY_MS = 5000;
     private static final long SHOW_MS = 2000;
+    private static final int MAX_RESPONSE_BYTES = 16 * 1024;
 
     private final Handler main = new Handler(Looper.getMainLooper());
     private WindowManager windowManager;
@@ -145,7 +146,7 @@ public class VolumeOverlayService extends Service {
                 + "<u:" + action + " xmlns:u=\"urn:schemas-upnp-org:service:RenderingControl:1\">"
                 + "<InstanceID>0</InstanceID><Channel>Master</Channel>"
                 + "</u:" + action + "></s:Body></s:Envelope>";
-        URL url = new URL("http://" + ip + ":1400/MediaRenderer/RenderingControl/Control");
+        URL url = new URL("http", ip, 1400, "/MediaRenderer/RenderingControl/Control");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         try {
             conn.setConnectTimeout(1000);
@@ -162,7 +163,11 @@ public class VolumeOverlayService extends Service {
             try (InputStream in = conn.getInputStream()) {
                 ByteArrayOutputStream buf = new ByteArrayOutputStream();
                 byte[] chunk = new byte[1024];
-                for (int n; (n = in.read(chunk)) != -1; ) buf.write(chunk, 0, n);
+                for (int n; (n = in.read(chunk)) != -1; ) {
+                    buf.write(chunk, 0, n);
+                    // Real replies are a few hundred bytes.
+                    if (buf.size() > MAX_RESPONSE_BYTES) throw new IOException("Response too large");
+                }
                 response = buf.toString("UTF-8");
             }
             Matcher m = Pattern.compile("<" + field + ">(\\d+)</" + field + ">").matcher(response);
