@@ -38,9 +38,9 @@ public class VolumeOverlayService extends Service {
     private static final long SHOW_MS = 2000;
     private static final int MAX_RESPONSE_BYTES = 16 * 1024;
     // Samsung TVs show a volume control for HDMI soundbars against the left edge, about
-    // 29.5% of the screen wide, with its minus sign 69% of the way down. The bar sits
-    // just below it at the same width.
-    private static final float WIDTH_FRACTION = 0.295f;
+    // 30% of the screen wide, with its minus sign 69% of the way down. The bar sits
+    // just below it, about as wide.
+    private static final float WIDTH_FRACTION = 0.31f;
     private static final float TOP_FRACTION = 0.73f;
 
     private final Handler main = new Handler(Looper.getMainLooper());
